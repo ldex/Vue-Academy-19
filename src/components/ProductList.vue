@@ -10,7 +10,7 @@
     </fieldset>
     <ul class="products">
       <li
-        v-for="product in sortedFilteredProducts"
+        v-for="product in sortedFilteredPaginatedProducts"
         :key="product.id"
         :class="{
           discontinued: product.discontinued,
@@ -24,6 +24,15 @@
         <span class="price">{{ product.price }}</span>
       </li>
     </ul>
+
+    <button @click="prevPage" :disabled="pageNumber === 1">
+      &lt; Previous
+    </button>
+    Page {{ pageNumber }}
+    <button @click="nextPage" :disabled="pageNumber >= pageCount">
+      Next &gt;
+    </button>
+
     <product-details :product="selectedProduct"></product-details>
   </div>
 </template>
@@ -49,11 +58,27 @@ export default {
         return 0;
       });
     },
+    sortedFilteredPaginatedProducts() {
+      const start = (this.pageNumber - 1) * this.pageSize,
+        end = start + this.pageSize;
+
+      return this.sortedFilteredProducts.slice(start, end);
+    },
+    pageCount() {
+      let l = this.filteredProducts.length,
+        s = this.pageSize;
+      return Math.ceil(l / s);
+    },
   },
   props: {
     products: {
       type: Array,
       default: () => [],
+    },
+    pageSize: {
+      type: Number,
+      required: false,
+      default: 5,
     },
   },
   methods: {
@@ -64,6 +89,14 @@ export default {
       }
       this.sortName = s;
     },
+    nextPage() {
+      this.pageNumber++;
+      this.selectedProduct = null;
+    },
+    prevPage() {
+      this.pageNumber--;
+      this.selectedProduct = null;
+    },
   },
   data() {
     return {
@@ -72,6 +105,7 @@ export default {
       filterName: "",
       sortName: "modifiedDate",
       sortDir: "desc",
+      pageNumber: 1,
     };
   },
 };
