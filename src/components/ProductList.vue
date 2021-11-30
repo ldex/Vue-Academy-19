@@ -28,7 +28,7 @@
     <button @click="prevPage" :disabled="pageNumber === 1">
       &lt; Previous
     </button>
-    Page {{ pageNumber }}
+    Page {{ pageNumber }} / {{ pageCount }}
     <button @click="nextPage" :disabled="pageNumber >= pageCount">
       Next &gt;
     </button>
@@ -47,7 +47,7 @@ export default {
   computed: {
     filteredProducts() {
       let filter = new RegExp(this.filterName, "i");
-      return this.products.filter((el) => el.name.match(filter));
+      return this.products.filter((product) => product.name.match(filter));
     },
     sortedFilteredProducts() {
       return [...this.filteredProducts].sort((a, b) => {
@@ -107,6 +107,19 @@ export default {
       sortDir: "desc",
       pageNumber: 1,
     };
+  },
+  watch: {
+    // reset pagination when filtering
+    filterName() {
+      this.pageNumber = 1;
+    },
+    // reset pagination when sorting
+    sortName() {
+      this.pageNumber = 1;
+    },
+    sortDir() {
+      this.pageNumber = 1;
+    },
   },
 };
 </script>
