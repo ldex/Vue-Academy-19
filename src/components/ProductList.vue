@@ -1,9 +1,12 @@
 <template>
   <div>
     <h2>{{ title }}</h2>
+    <fieldset class="filters">
+          <span> Filter by name: <input v-model="filterName" /></span>
+     </fieldset>
     <ul class="products">
       <li
-        v-for="product in products"
+        v-for="product in filteredProducts"
         :key="product.id"
         :class="{ discontinued: product.discontinued, selected: selectedProduct === product }"
         :title="JSON.stringify(product)"
@@ -25,6 +28,12 @@ export default {
   components: {
     ProductDetails,
   },
+  computed: {
+      filteredProducts() {
+        let filter = new RegExp(this.filterName, 'i')
+        return this.products.filter(el => el.name.match(filter))
+      }
+  },
   props: {
     products: {
       type: Array,
@@ -35,6 +44,7 @@ export default {
     return {
       title: "Products",
       selectedProduct: null,
+      filterName: ''
     };
   }
 };
