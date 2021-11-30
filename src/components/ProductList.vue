@@ -2,13 +2,20 @@
   <div>
     <h2>{{ title }}</h2>
     <fieldset class="filters">
-          <span> Filter by name: <input v-model="filterName" /></span>
-     </fieldset>
+      Sort by:
+      <button @click="sort('name')">Name</button>
+      <button @click="sort('price')">Price</button>
+      <button @click="sort('modifiedDate')">Date</button>
+      <span> Filter by name: <input v-model="filterName" /></span>
+    </fieldset>
     <ul class="products">
       <li
-        v-for="product in filteredProducts"
+        v-for="product in sortedFilteredProducts"
         :key="product.id"
-        :class="{ discontinued: product.discontinued, selected: selectedProduct === product }"
+        :class="{
+          discontinued: product.discontinued,
+          selected: selectedProduct === product,
+        }"
         :title="JSON.stringify(product)"
         @click="selectedProduct = product"
       >
@@ -29,10 +36,19 @@ export default {
     ProductDetails,
   },
   computed: {
-      filteredProducts() {
-        let filter = new RegExp(this.filterName, 'i')
-        return this.products.filter(el => el.name.match(filter))
-      }
+    filteredProducts() {
+      let filter = new RegExp(this.filterName, "i");
+      return this.products.filter((el) => el.name.match(filter));
+    },
+    sortedFilteredProducts() {
+      return [...this.filteredProducts].sort((a, b) => {
+        let modifier = 1;
+        if (this.sortDir === "desc") modifier = -1;
+        if (a[this.sortName] < b[this.sortName]) return -1 * modifier;
+        if (a[this.sortName] > b[this.sortName]) return 1 * modifier;
+        return 0;
+      });
+    },
   },
   props: {
     products: {
@@ -40,13 +56,24 @@ export default {
       default: () => [],
     },
   },
+  methods: {
+    sort: function (s) {
+      //if s == current sort, reverse order
+      if (s === this.sortName) {
+        this.sortDir = this.sortDir === "asc" ? "desc" : "asc";
+      }
+      this.sortName = s;
+    },
+  },
   data() {
     return {
       title: "Products",
       selectedProduct: null,
-      filterName: ''
+      filterName: "",
+      sortName: "modifiedDate",
+      sortDir: "desc",
     };
-  }
+  },
 };
 </script>
 
