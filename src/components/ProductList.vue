@@ -4,8 +4,9 @@
     <ul class="products">
       <li
         v-for="product in products"
-        v-bind:key="product.id"
-        v-bind:class="{ discontinued: product.discontinued }"
+        :key="product.id"
+        :class="{ discontinued: product.discontinued, selected: selectedProduct === product }"
+        :title="JSON.stringify(product)"
         @click="selectedProduct = product"
       >
         <span class="name">{{ product.name }}</span>
@@ -35,7 +36,7 @@ export default {
       title: "Products",
       selectedProduct: null,
     };
-  },
+  }
 };
 </script>
 
