@@ -8,7 +8,10 @@
       <button @click="sort('modifiedDate')">Date</button>
       <span> Filter by name: <input v-model="filterName" /></span>
     </fieldset>
-    <ul class="products">
+    <div v-if="filteredProducts.length === 0">
+      <h2>No product to dispay!</h2>
+    </div>
+    <ul class="products" v-else>
       <li
         v-for="product in sortedFilteredPaginatedProducts"
         :key="product.id"
@@ -28,7 +31,7 @@
     <button @click="prevPage" :disabled="pageNumber === 1">
       &lt; Previous
     </button>
-    Page {{ pageNumber }} / {{ pageCount }}
+    Page {{ pageNumber }} / {{ pageCount }} <span v-if="filterName != ''">(filtered)</span>
     <button @click="nextPage" :disabled="pageNumber >= pageCount">
       Next &gt;
     </button>
@@ -62,7 +65,8 @@ export default {
     pageCount() {
       let l = this.filteredProducts.length,
         s = this.pageSize;
-      return Math.ceil(l / s);
+      let res = Math.ceil(l / s);
+      return res == 0 ? 1 : res;
     },
   },
   props: {
@@ -87,6 +91,8 @@ export default {
     nextPage() {
       this.pageNumber++;
       this.selectedProduct = null;
+
+      throw new Error("testing error..."); // juste pour tester!!
     },
     prevPage() {
       this.pageNumber--;

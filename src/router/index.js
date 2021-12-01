@@ -42,6 +42,7 @@ function castRouteParamsId(route) {
   };
 }
 
+
 const router = createRouter({
   history: createWebHistory(),
   routes
