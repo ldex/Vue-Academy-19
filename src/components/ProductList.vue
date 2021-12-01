@@ -22,9 +22,9 @@
         :title="JSON.stringify(product)"
         @click="onSelect(product)"
       >
-        <span class="name">{{ product.name }}</span>
-        <span class="description">{{ product.description }}</span>
-        <span class="price">{{ product.price }}</span>
+            <slot v-bind:product="product">
+              {{ product.name }}
+            </slot>
       </li>
     </ul>
 

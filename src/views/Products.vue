@@ -7,7 +7,21 @@
         <div v-if="loading">
             <h2 class="loading">Loading products</h2>
         </div>
-        <product-list v-else :products="products" :page-size="5"></product-list>
+        <div v-else>
+        <product-list :products="products" :page-size="5">
+            <template v-slot="props">
+              <span>{{ props.product.name }}</span>
+            </template>
+        </product-list>
+        <product-list  :products="products" :page-size="5">
+            <template v-slot="props">
+              <span>{{ props.product.modifiedDate }}</span>
+              <span>{{ props.product.name }}</span>
+              <span>({{ props.product.price }}$)</span>
+            </template>
+        </product-list>
+        </div>
+
         </section>
     </div>
 </template>
