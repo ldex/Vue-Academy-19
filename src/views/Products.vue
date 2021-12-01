@@ -5,7 +5,7 @@
         </section>
         <section v-else>
         <div v-if="loading">
-            <h2 class="loading">Loading products...</h2>
+            <h2 class="loading">Loading products</h2>
         </div>
         <product-list v-else :products="products" :page-size="5"></product-list>
         </section>

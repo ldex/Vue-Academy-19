@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Products from '@/views/Products.vue';
 import Error from '@/views/Error.vue';
+import ProductDetails from '@/components/ProductDetails.vue';
 
 const routes = [
   {
@@ -13,6 +14,12 @@ const routes = [
     path: '/products',
     name: 'products',
     component: Products
+  },
+  {
+    path: '/product/:id',
+    name: 'product',
+    component: ProductDetails,
+    props: castRouteParamsId
   },
   {
     path: '/about',
@@ -28,6 +35,12 @@ const routes = [
     component: Error
   }
 ]
+
+function castRouteParamsId(route) {
+  return {
+    id: Number(route.params.id),
+  };
+}
 
 const router = createRouter({
   history: createWebHistory(),

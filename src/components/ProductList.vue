@@ -17,7 +17,7 @@
           selected: selectedProduct === product,
         }"
         :title="JSON.stringify(product)"
-        @click="selectedProduct = product"
+        @click="onSelect(product)"
       >
         <span class="name">{{ product.name }}</span>
         <span class="description">{{ product.description }}</span>
@@ -33,17 +33,12 @@
       Next &gt;
     </button>
 
-    <product-details :product="selectedProduct"></product-details>
   </div>
 </template>
 
 <script>
-import ProductDetails from "./ProductDetails.vue";
 
 export default {
-  components: {
-    ProductDetails,
-  },
   computed: {
     filteredProducts() {
       let filter = new RegExp(this.filterName, "i");
@@ -97,6 +92,9 @@ export default {
       this.pageNumber--;
       this.selectedProduct = null;
     },
+    onSelect(product) {
+      this.$router.push({ name: "product", params: { id: product.id } });
+    }
   },
   data() {
     return {
