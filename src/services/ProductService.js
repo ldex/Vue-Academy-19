@@ -25,6 +25,11 @@ const RESOURCE_NAME = 'products';
 export default {
   clearCache: false,
 
+  insertProduct(product) {
+    this.clearCache = true;
+    return apiClient.post(RESOURCE_NAME, product)
+  },
+
   getProducts() {
     let sortParams = `?$orderby=ModifiedDate%20desc`;
     let forceUpdate = this.clearCache;
