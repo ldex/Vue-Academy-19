@@ -2,6 +2,7 @@
   <div class="home">
     <modal-button button-text="Open Modal!"></modal-button>
     <img alt="Vue logo" src="../assets/logo.png">
+    {{ env }}
   </div>
 </template>
 

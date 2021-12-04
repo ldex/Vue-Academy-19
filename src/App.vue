@@ -26,16 +26,22 @@
       </template>
     </router-view>
     <hr />
-    <footer>Copyright Vue Academy 2021</footer>
+    <footer>Copyright Vue Academy 2021 / {{env}}</footer>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { environment } from "@/environment";
 
 export default {
     computed: {
       ...mapGetters(["loggedIn"])
+    },
+    data() {
+      return {
+        env: environment
+      }
     },
     created() {
       this.checkPreviousLogin(); // check if there is an existing auth token when we enter the app
