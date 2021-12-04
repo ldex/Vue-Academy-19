@@ -129,15 +129,27 @@
 </template>
 
 <script>
-import ProductService from "@/services/ProductService.js";
 import { required, minLength, maxLength, between } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+
 const validUrlRegex =
   /^(https?:\/\/[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,5}(?:\/\S*)?(?:[-A-Za-z0-9+&@#/%?=~_|!:,.;])+\.(?:jpg|jpeg|gif|png))$/g;
 
 export default {
   setup() {
     return { v$: useVuelidate() };
+  },
+  data() {
+    return {
+      product: {
+        name: "",
+        price: "",
+        description: "",
+        imageUrl: "",
+        discontinued: false,
+        fixedPrice: false,
+      },
+    };
   },
   validations: {
     product: {
@@ -161,18 +173,6 @@ export default {
       },
     },
   },
-  data() {
-    return {
-      product: {
-        name: "",
-        price: "",
-        description: "",
-        imageUrl: "",
-        discontinued: false,
-        fixedPrice: false,
-      },
-    };
-  },
   methods: {
     onSubmit() {
       this.v$.$touch();
@@ -187,7 +187,8 @@ export default {
           fixedPrice: this.product.fixedPrice,
         };
         console.log(newProduct);
-        ProductService.insertProduct(newProduct)
+        this.$store
+          .dispatch("addProduct", newProduct)
           .then(() => {
             this.$router.push({ name: "products" });
           })
@@ -201,6 +202,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.errorMessage {
+  color: red;
+}
 input:active,
 input:focus,
 input:hover,
@@ -215,10 +219,6 @@ label {
   clear: both;
   float: left;
   width: 120px;
-}
-
-.errorMessage {
-  color: red;
 }
 
 .form-group--error {

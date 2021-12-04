@@ -1,17 +1,16 @@
 <template>
-  <div>
-    <h1>Error!</h1>
+<div>
+    <h1>
+    Error!
+    </h1>
     <p>
-      {{ message }}
+        {{ message }}
     </p>
-  </div>
+</div>
 </template>
 
 <script>
 export default {
-  props: ["message"],
-};
+    props: ['message']
+}
 </script>
-
-<style lang="scss" scoped>
-</style>

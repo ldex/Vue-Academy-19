@@ -25,11 +25,6 @@ const RESOURCE_NAME = 'products';
 export default {
   clearCache: false,
 
-  insertProduct(product) {
-    this.clearCache = true;
-    return apiClient.post(RESOURCE_NAME, product)
-  },
-
   getProducts() {
     let sortParams = `?$orderby=ModifiedDate%20desc`;
     let forceUpdate = this.clearCache;
@@ -39,5 +34,15 @@ export default {
 
   getProduct(id) {
     return apiClient.get(`${RESOURCE_NAME}/${id}`)
-  }
+  },
+
+  insertProduct(product) {
+    this.clearCache = true;
+    return apiClient.post(RESOURCE_NAME, product)
+  },
+
+  deleteProduct(product) {
+    this.clearCache = true;
+    return apiClient.delete(`${RESOURCE_NAME}/${product.id}`)
+  },
 }
